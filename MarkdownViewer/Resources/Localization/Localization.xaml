@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="WindowsTitelZeile">Minimal WPF Template NET 10</system:String>
+    <system:String x:Key="WindowsTitelZeile">Markdown Viewer und Editor</system:String>
     <system:String x:Key="DialogWindowsTitelZeile">Beispiel Dialog Window</system:String>
 
     <system:String x:Key="MessageExit_Titel_DE">Beenden</system:String>

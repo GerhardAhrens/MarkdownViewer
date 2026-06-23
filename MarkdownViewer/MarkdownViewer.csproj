@@ -24,4 +24,9 @@
     <Resource Include="Resources\Picture\ApplicationIcon.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\Editor\" />
+    <Folder Include="Core\Viewer\" />
+  </ItemGroup>
+
 </Project>

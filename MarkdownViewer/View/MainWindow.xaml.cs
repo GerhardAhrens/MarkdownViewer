@@ -17,6 +17,9 @@ namespace MarkdownViewer
 {
     using System.ComponentModel;
     using System.Windows;
+    using System.Windows.Documents;
+
+    using MarkdownViewer.Core;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -36,7 +39,10 @@ namespace MarkdownViewer
             WeakEventManager<WindowBase, CancelEventArgs>.AddHandler(this, "Closing", this.OnWindowClosing);
             this.SetVectorIcon("IconApplicationLogo", 64);
 
-            this.QuitCommand = new CommandBase(() => this.OnQuit("Argument"));
+            this.QuitCommand = new CommandBase(() => this.OnQuit());
+            this.EditMarkdownCommand = new CommandBase(OnEditMarkdown);
+            this.ViewMarkdownCommand = new CommandBase(OnViewMarkdown);
+
             this.InformationCommand = new CommandBase(this.OnInformationPopup);
             this.SettingsCommand = new CommandBase(this.OnSettingsPopup);
             this.CloseInformationPopupCommand = new CommandBase(this.OnCloseInformation);
@@ -49,6 +55,9 @@ namespace MarkdownViewer
 
         #region Properties
         public CommandBase QuitCommand { get; private set; }
+        public CommandBase EditMarkdownCommand { get; private set; }
+        public CommandBase ViewMarkdownCommand { get; private set; }
+
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
         public CommandBase CloseInformationPopupCommand { get; private set; }
@@ -69,6 +78,15 @@ namespace MarkdownViewer
             StatusbarMain.Statusbar.DatabaseInfo = "Keine";
             StatusbarMain.Statusbar.DatabaseInfoTooltip = "Keine Datenbank verbunden";
             StatusbarMain.Statusbar.Notification = "Bereit";
+
+            if (App.CommandLine.Modul == ModulTyp.Viewer)
+            {
+                this.ViewMarkdownCommand.TryExecute();
+            }
+            else if (App.CommandLine.Modul == ModulTyp.Editor)
+            {
+                this.EditMarkdownCommand.TryExecute();
+            }
         }
 
         private void OnCloseApplication(object sender, RoutedEventArgs e)
@@ -109,9 +127,8 @@ namespace MarkdownViewer
         #endregion Windows Events
 
         #region Command Handler
-        private void OnQuit(string param)
+        private void OnQuit()
         {
-            this.Tag = param;
             this.Close();
         }
 
@@ -133,6 +150,19 @@ namespace MarkdownViewer
         private void OnCloseSettingsPopup()
         {
             this.SettingsPopup.SetValue(MaskLayerBehavior.IsOpenProperty, false);
+        }
+
+        private void OnEditMarkdown()
+        {
+            MarkdownEditor md = new();
+            this.contentView.Content = md;
+        }
+
+        private void OnViewMarkdown()
+        {
+            MarkdownViewer view = new MarkdownViewer();
+            view.MarkdownText = string.Empty;
+            this.contentView.Content = view;
         }
         #endregion
     }

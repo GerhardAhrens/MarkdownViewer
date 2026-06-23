@@ -118,6 +118,33 @@
                         Stretch="Uniform" />
                 </Button>
 
+                <Rectangle
+                    Width="1"
+                    Margin="5,0,0,0"
+                    Fill="Gray" />
+
+                <Button
+                    Width="40"
+                    Height="40"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=EditMarkdownCommand}"
+                    ToolTip="Markdown Datei bearbeiten">
+                    <Image Source="{StaticResource ResourceKey=IconEditMarkdown}" Stretch="None" />
+                </Button>
+
+                <Button
+                    Width="40"
+                    Height="40"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=ViewMarkdownCommand}"
+                    ToolTip="Markdown Datei ansehen">
+                    <Image Source="{StaticResource ResourceKey=IconApplicationLogo}" Stretch="Fill" />
+                </Button>
+
                 <Button
                     Width="40"
                     Height="40"
@@ -149,17 +176,19 @@
                         Source="{StaticResource ResourceKey=ApplicationSettingsIcon}"
                         Stretch="Uniform" />
                 </Button>
+
+                <Rectangle
+                    Width="1"
+                    Margin="5,0,5,0"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Right"
+                    Fill="Gray" />
+
             </DockPanel>
         </Border>
 
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="24"
-            Text="{Binding Path=WindowTitel, FallbackValue=~WindowTitel}" />
-
+        <ContentPresenter x:Name="contentView" Grid.Row="1" />
+        
         <!--#region Statuszeile-->
         <StatusBar
             Grid.Row="2"
