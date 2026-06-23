@@ -71,6 +71,8 @@ namespace MarkdownViewer
             }
         }
 
+        public static ProgramOptions CommandLine { get; private set; }
+
         /// <summary>
         /// Statische Eigenschaft für die globalen Einstellungen der Anwendung, hier können alle Einstellungen gespeichert werden, 
         /// die in der gesamten Anwendung benötigt werden, z.B. Spracheinstellung, Benutzername, etc.
@@ -92,6 +94,18 @@ namespace MarkdownViewer
 
             try
             {
+                // Die Argumente sind im Array e.Args verfügbar
+                if (e.Args.Length > 0)
+                {
+                    /*
+                     * -f=test.md -m=Viewer
+                     */
+                    CommandLine = CommandLineParser.Parse<ProgramOptions>(e.Args);
+                }
+                else
+                {
+                    CommandLine = new() { Modul = ModulTyp.Viewer};
+                }
 #if DEBUG
                 PresentationTraceSources.DataBindingSource.Listeners.Add(new ConsoleTraceListener());
                 PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Critical;
