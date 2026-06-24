@@ -46,6 +46,8 @@
             set => SetValue(MarkdownTextProperty, value);
         }
 
+        private FlowDocument Document { get; set; }
+
         private static void OnMarkdownChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewer = (MarkdownViewer)d;
@@ -56,6 +58,7 @@
         {
             FlowDocument doc = MarkdownParser.Parse(markdown ?? "");
             this.PART_RichText.Document = doc;
+            this.Document = doc;
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
