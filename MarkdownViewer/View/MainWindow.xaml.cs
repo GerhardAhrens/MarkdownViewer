@@ -16,6 +16,7 @@
 namespace MarkdownViewer
 {
     using System.ComponentModel;
+    using System.IO;
     using System.Windows;
     using System.Windows.Documents;
 
@@ -75,8 +76,8 @@ namespace MarkdownViewer
         #region Windows Events
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            StatusbarMain.Statusbar.DatabaseInfo = "Keine";
-            StatusbarMain.Statusbar.DatabaseInfoTooltip = "Keine Datenbank verbunden";
+            StatusbarMain.Statusbar.DatabaseInfo = Path.GetFileName(App.CommandLine.Dateiname);
+            StatusbarMain.Statusbar.DatabaseInfoTooltip = App.CommandLine.Dateiname;
             StatusbarMain.Statusbar.Notification = "Bereit";
 
             if (App.CommandLine.Modul == ModulTyp.Viewer)
@@ -104,16 +105,7 @@ namespace MarkdownViewer
                 return;
             }
 
-            MessageBoxResult msgYN;
-            if (this.Tag != null)
-            {
-                msgYN = this.Message.AppExitMessage(this.Tag.ToString());
-            }
-            else
-            {
-                msgYN = this.Message.AppExitMessage();
-            }
-
+            MessageBoxResult msgYN = this.Message.AppExitMessage();
             if (msgYN == MessageBoxResult.Yes)
             {
                 App.ApplicationExit();
@@ -161,8 +153,18 @@ namespace MarkdownViewer
         private void OnViewMarkdown()
         {
             MarkdownViewer view = new MarkdownViewer();
-            view.MarkdownText = string.Empty;
-            this.contentView.Content = view;
+
+            if (File.Exists(App.CommandLine.Dateiname) == true)
+            {
+                string mdText = File.ReadAllText(App.CommandLine.Dateiname);
+                view.MarkdownText = mdText;
+                this.contentView.Content = view;
+            }
+            else
+            {
+                view.MarkdownText = string.Empty;
+                this.contentView.Content = view;
+            }
         }
         #endregion
     }

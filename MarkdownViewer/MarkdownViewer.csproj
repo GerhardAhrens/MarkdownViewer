@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Core\Editor\" />
+    <Folder Include="Core\FileAssociation\" />
     <Folder Include="Core\Viewer\" />
   </ItemGroup>
 

@@ -213,7 +213,7 @@
 
             <StatusBarItem DockPanel.Dock="Left" ToolTip="{Binding Path=DatabaseInfoTooltip, Source={x:Static base:StatusbarMain.Statusbar}}">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="{StaticResource ResourceKey=IconStatusbarDatabase}" />
+                    <Image Source="{StaticResource ResourceKey=IconApplicationLogo}" />
 
                     <TextBlock
                         Margin="5,0,0,0"
