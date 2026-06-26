@@ -71,17 +71,22 @@
                         new KeyGesture(Key.I, ModifierKeys.Control)));
         }
 
-        public static readonly DependencyProperty MarkdownTextProperty =
-        DependencyProperty.Register(
-            nameof(FlatText),
-            typeof(string),
-            typeof(MarkdownEditor),
-            new PropertyMetadata("", OnFlatTextChanged));
+        public static readonly DependencyProperty FlatTextProperty =
+            DependencyProperty.Register(nameof(FlatText), typeof(string), typeof(MarkdownEditor), new PropertyMetadata(string.Empty, OnFlatTextChanged));
 
         public string FlatText
         {
-            get => (string)GetValue(MarkdownTextProperty);
-            set => SetValue(MarkdownTextProperty, value);
+            get => (string)GetValue(FlatTextProperty);
+            set => SetValue(FlatTextProperty, value);
+        }
+
+        public static readonly DependencyProperty FlatFileProperty =
+            DependencyProperty.Register(nameof(FlatFile), typeof(string), typeof(MarkdownEditor), new PropertyMetadata("", OnFlatTextChanged));
+
+        public string FlatFile
+        {
+            get => (string)GetValue(FlatFileProperty);
+            set => SetValue(FlatFileProperty, value);
         }
 
         public string FileName { get; private set; }
@@ -469,13 +474,14 @@
             File.WriteAllText(path, Editor.Text);
 
             this.FileName = path;
+            this.FlatFile = path;
             this.IsModified = false;
             this.UpdateStatus();
         }
 
         public void Save()
         {
-            if (string.IsNullOrEmpty(FileName))
+            if (string.IsNullOrEmpty(this.FileName) == true)
             {
                 SaveFileDialog dlg = new SaveFileDialog();
 
@@ -488,7 +494,7 @@
             }
             else
             {
-                this.SaveFile(FileName);
+                this.SaveFile(this.FileName);
             }
         }
 

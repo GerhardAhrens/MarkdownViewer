@@ -151,11 +151,13 @@ namespace MarkdownViewer
             {
                 md.FlatText = App.CommandLine.Dateiname;
                 this.contentView.Content = md;
+                App.CommandLine.Dateiname = md.FlatText;
             }
             else
             {
                 md.FlatText = string.Empty;
                 this.contentView.Content = md;
+                App.CommandLine.Dateiname = md.FlatText;
             }
         }
 
