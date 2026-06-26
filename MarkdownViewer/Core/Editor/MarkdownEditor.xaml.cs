@@ -10,6 +10,8 @@
     using System.Windows.Media;
     using System.Windows.Threading;
 
+    using global::MarkdownViewer.Core.Editor;
+
     using Microsoft.Win32;
 
     /// <summary>
@@ -18,6 +20,8 @@
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Member als statisch markieren", Justification = "<Ausstehend>")]
     public partial class MarkdownEditor : UserControl
     {
+        public event EventHandler<SaveEventArgs> DocumentSaved;
+
         private const string IndentString = "    "; // 4 Leerzeichen
         private const string DATEIFILTER = "Markdown (*.md)|*.md|Textdateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*";
         private ScrollViewer editorScrollViewer;
@@ -369,6 +373,12 @@
             this.Save();
         }
 
+        protected virtual void OnDocumentSaved(SaveEventArgs e)
+        {
+            // Der ?-Operator prüft, ob überhaupt jemand das Event abonniert hat
+            DocumentSaved?.Invoke(this, e);
+        }
+
         #region Bereich für Kontextmenü
         private void LoadFile_Click(object sender, RoutedEventArgs e)
         {
@@ -496,6 +506,8 @@
             {
                 this.SaveFile(this.FileName);
             }
+
+            this.OnDocumentSaved(new SaveEventArgs(this.FileName));
         }
 
         private void OpenFileDialog()
