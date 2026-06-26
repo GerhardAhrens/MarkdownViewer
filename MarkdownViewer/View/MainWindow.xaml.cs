@@ -147,7 +147,16 @@ namespace MarkdownViewer
         private void OnEditMarkdown()
         {
             MarkdownEditor md = new();
-            this.contentView.Content = md;
+            if (File.Exists(App.CommandLine.Dateiname) == true)
+            {
+                md.FlatText = App.CommandLine.Dateiname;
+                this.contentView.Content = md;
+            }
+            else
+            {
+                md.FlatText = string.Empty;
+                this.contentView.Content = md;
+            }
         }
 
         private void OnViewMarkdown()

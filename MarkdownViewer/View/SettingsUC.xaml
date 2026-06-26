@@ -59,7 +59,7 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 ColumnDefinitions="150, *"
-                RowDefinitions="30,40">
+                RowDefinitions="Auto,Auto,40">
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"
@@ -69,8 +69,21 @@
                 <base:YesNoComboBox
                     Grid.Row="0"
                     Grid.Column="1"
+                    Margin="0,5,0,0"
                     ResultSelection="{Binding Path=SelectionExitAnswer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding Path=FileTypText, FallbackValue=~FileTypText}"
+                    TextWrapping="Wrap" />
+
+                <base:YesNoComboBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="0,5,0,0"
+                    ResultSelection="{Binding Path=SelectionFileTyp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </Grid>
 
         </GroupBox>

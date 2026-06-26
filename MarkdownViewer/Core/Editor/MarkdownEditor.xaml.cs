@@ -36,6 +36,7 @@
 
 
             WeakEventManager<TextBox, KeyEventArgs>.AddHandler(this.Editor, "PreviewKeyDown", this.OnEditorPreviewKeyDown);
+            WeakEventManager<TextBox, RoutedEventArgs>.AddHandler(this.Editor, "LostFocus", this.OnEditorLostFocus);
 
             InputBindings.Add(new KeyBinding(
             new EditorRelayCommand(o => OpenFileDialog()),
@@ -68,6 +69,19 @@
             InputBindings.Add(new KeyBinding(
                         new EditorRelayCommand(o => this.InserMarkdownInfo(), null),
                         new KeyGesture(Key.I, ModifierKeys.Control)));
+        }
+
+        public static readonly DependencyProperty MarkdownTextProperty =
+        DependencyProperty.Register(
+            nameof(FlatText),
+            typeof(string),
+            typeof(MarkdownEditor),
+            new PropertyMetadata("", OnFlatTextChanged));
+
+        public string FlatText
+        {
+            get => (string)GetValue(MarkdownTextProperty);
+            set => SetValue(MarkdownTextProperty, value);
         }
 
         public string FileName { get; private set; }
@@ -338,6 +352,17 @@
             e.Handled = true;
         }
         #endregion Text per Doppelklick markieren
+
+        private static void OnFlatTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewer = (MarkdownEditor)d;
+            viewer.LoadFile(e.NewValue as string);
+        }
+
+        private void OnEditorLostFocus(object sender, RoutedEventArgs e)
+        {
+            this.Save();
+        }
 
         #region Bereich für Kontextmenü
         private void LoadFile_Click(object sender, RoutedEventArgs e)

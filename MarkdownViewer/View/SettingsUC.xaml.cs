@@ -30,6 +30,18 @@
             set => base.SetValue(value, this.SetBoolSettingHandler);
         }
 
+        public string FileTypText
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
+        public bool SelectionFileTyp
+        {
+            get => base.GetValue<bool>();
+            set => base.SetValue(value, this.SetBoolSettingHandler);
+        }
+
         private ApplicationSettings Settings { get; set; }
 
         #endregion Properties
@@ -44,6 +56,17 @@
 
                 this.Settings = App.Settings;
                 this.SelectionExitAnswer = this.Settings.FrageExit;
+
+                if (FileAssociationManager.IsOwnedByApplication() == false)
+                {
+                    this.FileTypText = "Der Dateityp *.md ist nicht registriert. Soll der Typ registriert werden?";
+                    this.SelectionFileTyp = false;
+                }
+                else
+                {
+                    this.FileTypText = "Der Dateityp *.md ist registriert. Soll die registrierung aufgehoben werden?";
+                    this.SelectionFileTyp = false;
+                }
             }
         }
         #endregion WindowEventHandler
@@ -53,6 +76,20 @@
             if (arg2 == nameof(this.SelectionExitAnswer))
             {
                 App.Settings.FrageExit = arg1;
+            }
+            else if (arg2 == nameof(this.SelectionFileTyp))
+            {
+                if (arg1 == true)
+                {
+                    if (FileAssociationManager.IsOwnedByApplication() == false)
+                    {
+                        FileAssociationManager.Register();
+                    }
+                    else 
+                    {
+                        FileAssociationManager.Unregister();
+                    }
+                }
             }
         }
 
